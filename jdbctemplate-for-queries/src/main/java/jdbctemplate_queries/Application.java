@@ -1,7 +1,7 @@
-package com.baeldung.jdbctemplate;
+package jdbctemplate_queries;
 
-import com.baeldung.jdbctemplate.domain.Employee;
-import com.baeldung.jdbctemplate.rowmappers.EmployeeRowMapper;
+import jdbctemplate_queries.domain.Employee;
+import jdbctemplate_queries.rowmappers.EmployeeRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
@@ -90,6 +89,15 @@ public class Application implements CommandLineRunner {
         namedParameters = new BeanPropertySqlParameterSource(employee);
         int joshCount = namedParameterJdbcTemplate.queryForObject(SELECT_COUNT_BY_NAME, namedParameters, Integer.class);
         assertEquals(2, joshCount);
+
+        // We can query objects without setting up a rowmapper
+        List<Employee> joshesWithoutMapper = jdbcTemplate.query(
+                "SELECT * FROM employee WHERE first_name = ?", new Object[] { "Josh" },
+                (rs, rowNum) -> new Employee(rs.getInt("ID"),
+                                             rs.getString("FIRST_NAME"),
+                                             rs.getString("LAST_NAME"),
+                                             rs.getString("COUNTRY")));
+        assertEquals(2, joshesWithoutMapper.size());
 
         // Custom row mappers make it easy to query for objects
         String queryById = "SELECT * FROM EMPLOYEE WHERE ID = ? ";

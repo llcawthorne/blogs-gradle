@@ -1,4 +1,4 @@
-package com.baeldung.jdbctemplate.domain;
+package jdbctemplate_queries.domain;
 
 public class Employee {
 

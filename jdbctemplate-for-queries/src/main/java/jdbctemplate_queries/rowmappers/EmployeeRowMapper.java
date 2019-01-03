@@ -1,6 +1,6 @@
-package com.baeldung.jdbctemplate.rowmappers;
+package jdbctemplate_queries.rowmappers;
 
-import com.baeldung.jdbctemplate.domain.Employee;
+import jdbctemplate_queries.domain.Employee;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
